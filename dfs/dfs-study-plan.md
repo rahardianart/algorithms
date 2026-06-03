@@ -234,3 +234,45 @@ func dfs(grid [][]int, r, c, target, replacement int) {
 **What to notice — Problem 2:** DFS returns an `int` (the area of the island it just explored). Each cell contributes 1 to the area. Return `1 + dfs(up) + dfs(down) + dfs(left) + dfs(right)`. Track the max across all starting cells.
 
 ---
+
+## Day 6 — Backtracking
+
+**Pattern:** DFS with explicit state undo on the way back up  
+**Key insight:** Make a choice, recurse, then undo the choice. The undo step is what separates backtracking from plain DFS.
+
+**Template adaptation:**
+
+```go
+func backtrack(candidates []int, current []int, result *[][]int) {
+    // base case: record result when done
+    if isDone(current) {
+        tmp := make([]int, len(current))
+        copy(tmp, current)
+        *result = append(*result, tmp)
+        return
+    }
+
+    for _, candidate := range candidates {
+        if isValid(candidate, current) {
+            current = append(current, candidate) // make choice
+            backtrack(candidates, current, result)
+            current = current[:len(current)-1]   // undo choice
+        }
+    }
+}
+```
+
+The undo step (`current[:len(current)-1]`) restores `current` to its state before the choice. Without it, you'd accumulate choices across branches.
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Permutations | Medium | https://leetcode.com/problems/permutations/ |
+| 2 | Subsets | Medium | https://leetcode.com/problems/subsets/ |
+
+**What to notice — Problem 1:** Track which numbers are used with a `used []bool` slice. `isValid` checks `!used[i]`. Make choice: `used[i] = true`, append to current. Undo: `used[i] = false`, remove last from current. Record when `len(current) == len(nums)`.
+
+**What to notice — Problem 2:** At each index, choose to include or exclude. No undo needed — pass index+1 to recurse, so each branch naturally excludes the current element. Record `current` at every call (not just leaves) since all subsets are valid.
+
+---
