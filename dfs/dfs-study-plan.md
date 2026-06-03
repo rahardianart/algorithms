@@ -276,3 +276,83 @@ The undo step (`current[:len(current)-1]`) restores `current` to its state befor
 **What to notice — Problem 2:** At each index, choose to include or exclude. No undo needed — pass index+1 to recurse, so each branch naturally excludes the current element. Record `current` at every call (not just leaves) since all subsets are valid.
 
 ---
+
+## Day 7 — Iterative DFS + Mixed Review
+
+**Pattern:** Iterative DFS using an explicit stack  
+**Key insight:** Replace the call stack with an explicit stack slice. Pop from the end (LIFO). Push right before left so left is processed first.
+
+**The Iterative Template:**
+
+```go
+func dfs(root *TreeNode) {
+    if root == nil {
+        return
+    }
+    stack := []*TreeNode{root}
+
+    for len(stack) > 0 {
+        node := stack[len(stack)-1]   // peek top
+        stack = stack[:len(stack)-1]  // pop
+
+        // process node here
+
+        if node.Right != nil {
+            stack = append(stack, node.Right) // push right first
+        }
+        if node.Left != nil {
+            stack = append(stack, node.Left)  // push left last (processed first)
+        }
+    }
+}
+```
+
+**BFS vs iterative DFS — the only difference:**
+
+```go
+// BFS: queue — pop from front
+node := queue[0]
+queue = queue[1:]
+
+// DFS: stack — pop from end
+node := stack[len(stack)-1]
+stack = stack[:len(stack)-1]
+```
+
+**When to use iterative over recursive:**
+- Very deep trees/graphs where recursion risks stack overflow (depth > ~10,000)
+- When you need to pause/resume traversal mid-way
+- Competitive environments with strict stack size limits
+
+**No new problems today.** Do this instead:
+
+1. Write the iterative DFS template from memory.
+2. Pick the 1 day that felt hardest (Days 2–6). Redo one problem from that day without looking at your notes.
+3. Answer out loud: *When would you use BFS over DFS, and vice versa?*
+
+   > Use **BFS** when: shortest path matters, or you need level-by-level processing. Use **DFS** when: you need to explore all paths, detect cycles, do backtracking, or the problem is naturally recursive (trees, nested structures).
+
+---
+
+## BFS vs DFS Cheatsheet
+
+| | BFS | DFS |
+|-|-----|-----|
+| Data structure | Queue (FIFO) | Call stack / explicit stack (LIFO) |
+| Traversal order | Level by level | Depth first |
+| Finds shortest path? | Yes (unweighted) | No |
+| Memory usage | O(width of tree/graph) | O(depth of tree/graph) |
+| Best for | Shortest path, level problems, multi-source | Path existence, backtracking, connected components, tree problems |
+
+## Pattern Cheatsheet
+
+| Pattern | Visited needed? | Key move | Level tracking? |
+|---------|----------------|----------|----------------|
+| Tree DFS (depth/existence) | No | Return value up the stack | No |
+| Tree DFS (paths) | No | Pass path down, copy at leaf | No |
+| Graph DFS | Yes | Mark visited before recursing | No |
+| Grid DFS | In-place | Modify grid cell to mark visited | No |
+| Backtracking | Depends | Undo choice after recursing | No |
+| Iterative DFS | Yes (for graphs) | Pop from end of stack slice | No |
+
+---
