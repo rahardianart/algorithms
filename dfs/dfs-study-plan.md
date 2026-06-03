@@ -127,8 +127,8 @@ func dfs(node *TreeNode, path []int, result *[][]int) {
     dfs(node.Left, path, result)
     dfs(node.Right, path, result)
 
-    // no explicit removal needed — append returns a new slice header
-    // the caller's path is unchanged when this call returns
+    // no explicit removal needed — the slice header (pointer, len, cap) is passed by value
+    // the caller's len is unchanged when this call returns, so it never sees the appended element
 }
 ```
 
@@ -143,7 +143,7 @@ func dfs(node *TreeNode, path []int, result *[][]int) {
 
 **What to notice — Problem 1:** Build a string path (e.g., `"1->2->5"`). At a leaf, record the full string. Use `strconv.Itoa` to convert int to string, and `strings.Join` or manual concatenation with `"->"`.
 
-**What to notice — Problem 2:** Same as the template above but also track `remaining` sum. Only record the path at a leaf when `remaining == node.Val`. Use the copy pattern to avoid slice aliasing bugs.
+**What to notice — Problem 2:** Same as the template above but also track `remaining` sum. Subtract `node.Val` from `remaining` at each node (preorder). At a leaf, record the path when `remaining == 0`. Use the copy pattern to avoid slice aliasing bugs.
 
 ---
 
@@ -229,7 +229,7 @@ func dfs(grid [][]int, r, c, target, replacement int) {
 | 1 | Flood Fill | Easy | https://leetcode.com/problems/flood-fill/ |
 | 2 | Max Area of Island | Medium | https://leetcode.com/problems/max-area-of-island/ |
 
-**What to notice — Problem 1:** Edge case — if `image[sr][sc]` already equals `color`, return immediately (no-op). Otherwise DFS will loop: you set the new color, then the base case checks for the new color and stops, but if `target == replacement`, you never stop.
+**What to notice — Problem 1:** Edge case — if `image[sr][sc]` already equals `color`, return immediately. When `target == replacement`, the in-place mark (`grid[r][c] = replacement`) is a no-op — the cell keeps its original value, the base case (`grid[r][c] != target`) never triggers, and DFS recurses into the same cell forever.
 
 **What to notice — Problem 2:** DFS returns an `int` (the area of the island it just explored). Each cell contributes 1 to the area. Return `1 + dfs(up) + dfs(down) + dfs(left) + dfs(right)`. Track the max across all starting cells.
 
