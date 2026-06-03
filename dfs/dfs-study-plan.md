@@ -101,3 +101,48 @@ func max(a, b int) int {
 **What to notice — Problem 2:** This is preorder — subtract `node.Val` from `remaining` as you go down. At a leaf, check if `remaining == 0`. Don't return true at a nil node — only at a leaf (both children nil).
 
 ---
+
+## Day 3 — Tree DFS: Root-to-Leaf Paths
+
+**Pattern:** DFS while tracking the path from root to current node  
+**Key insight:** Pass the current path as a parameter down the call stack; add on the way down, remove on the way back up (backtracking).
+
+**Template adaptation:**
+
+```go
+func dfs(node *TreeNode, path []int, result *[][]int) {
+    if node == nil {
+        return
+    }
+
+    path = append(path, node.Val) // add on the way down
+
+    if node.Left == nil && node.Right == nil { // leaf
+        // make a copy — path slice is reused across calls
+        tmp := make([]int, len(path))
+        copy(tmp, path)
+        *result = append(*result, tmp)
+    }
+
+    dfs(node.Left, path, result)
+    dfs(node.Right, path, result)
+
+    // no explicit removal needed — append returns a new slice header
+    // the caller's path is unchanged when this call returns
+}
+```
+
+**Why copy the path at the leaf:** Go slices share underlying arrays. If you append `path` directly to `result`, all entries in `result` will point to the same array and overwrite each other. Always copy.
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Binary Tree Paths | Easy | https://leetcode.com/problems/binary-tree-paths/ |
+| 2 | Path Sum II | Medium | https://leetcode.com/problems/path-sum-ii/ |
+
+**What to notice — Problem 1:** Build a string path (e.g., `"1->2->5"`). At a leaf, record the full string. Use `strconv.Itoa` to convert int to string, and `strings.Join` or manual concatenation with `"->"`.
+
+**What to notice — Problem 2:** Same as the template above but also track `remaining` sum. Only record the path at a leaf when `remaining == node.Val`. Use the copy pattern to avoid slice aliasing bugs.
+
+---
