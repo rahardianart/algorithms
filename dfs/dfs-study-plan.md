@@ -146,3 +146,50 @@ func dfs(node *TreeNode, path []int, result *[][]int) {
 **What to notice — Problem 2:** Same as the template above but also track `remaining` sum. Only record the path at a leaf when `remaining == node.Val`. Use the copy pattern to avoid slice aliasing bugs.
 
 ---
+
+## Day 4 — Graph DFS: Connected Components
+
+**Pattern:** DFS on explicit graphs with a visited set  
+**Key insight:** Unlike trees, graphs have cycles — the visited set is mandatory or DFS loops forever.
+
+**Template adaptation:**
+
+```go
+func dfs(node int, graph [][]int, visited []bool) {
+    visited[node] = true // mark before recursing
+
+    for _, neighbor := range graph[node] {
+        if !visited[neighbor] {
+            dfs(neighbor, graph, visited)
+        }
+    }
+}
+
+// Count connected components: run DFS from every unvisited node.
+func countComponents(n int, graph [][]int) int {
+    visited := make([]bool, n)
+    count := 0
+    for i := 0; i < n; i++ {
+        if !visited[i] {
+            dfs(i, graph, visited)
+            count++
+        }
+    }
+    return count
+}
+```
+
+**Difference from tree DFS:** Trees can't have cycles so no visited set is needed. Graphs can — always mark visited before recursing, not after.
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Number of Islands | Medium | https://leetcode.com/problems/number-of-islands/ |
+| 2 | Number of Provinces | Medium | https://leetcode.com/problems/number-of-provinces/ |
+
+**What to notice — Problem 1:** You solved this with BFS in Week 1. Now solve it with DFS and compare. The DFS version is often shorter — no queue, just recurse into all 4 neighbors. Mark visited by flipping `'1'` to `'0'` in-place.
+
+**What to notice — Problem 2:** Input is an `n×n` adjacency matrix. `isConnected[i][j] == 1` means edge between `i` and `j`. Build the neighbor list on the fly: iterate `j` from 0 to n, add `j` if `isConnected[i][j] == 1 && i != j`.
+
+---
