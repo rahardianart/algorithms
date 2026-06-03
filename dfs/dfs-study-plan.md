@@ -48,3 +48,56 @@ func dfs(node *TreeNode) {
    > **Preorder** (process before recursing): used when you need to pass information *down* the tree — e.g., passing a running sum to children. **Postorder** (process after recursing): used when you need to combine results *up* from children — e.g., computing max depth by taking `1 + max(left, right)`.
 
 ---
+
+## Day 2 — Tree DFS: Depth & Existence
+
+**Pattern:** DFS for a single value or measurement on a tree  
+**Key insight:** Return a value up the call stack — each recursive call combines results from left and right subtrees.
+
+**Template adaptation:**
+
+```go
+// Postorder: combine left and right results after recursing
+func maxDepth(node *TreeNode) int {
+    if node == nil {
+        return 0
+    }
+
+    left := maxDepth(node.Left)
+    right := maxDepth(node.Right)
+
+    return 1 + max(left, right) // combine after children
+}
+
+// Preorder: pass information down to children
+func hasPathSum(node *TreeNode, remaining int) bool {
+    if node == nil {
+        return false
+    }
+    remaining -= node.Val
+    if node.Left == nil && node.Right == nil { // leaf
+        return remaining == 0
+    }
+    return hasPathSum(node.Left, remaining) || hasPathSum(node.Right, remaining)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Maximum Depth of Binary Tree | Easy | https://leetcode.com/problems/maximum-depth-of-binary-tree/ |
+| 2 | Path Sum | Easy | https://leetcode.com/problems/path-sum/ |
+
+**What to notice — Problem 1:** This is postorder — you need both children's depths before you can compute the current node's depth. Return `1 + max(left, right)`. Base case: `nil` returns 0.
+
+**What to notice — Problem 2:** This is preorder — subtract `node.Val` from `remaining` as you go down. At a leaf, check if `remaining == 0`. Don't return true at a nil node — only at a leaf (both children nil).
+
+---
