@@ -193,3 +193,44 @@ func countComponents(n int, graph [][]int) int {
 **What to notice — Problem 2:** Input is an `n×n` adjacency matrix. `isConnected[i][j] == 1` means edge between `i` and `j`. Build the neighbor list on the fly: iterate `j` from 0 to n, add `j` if `isConnected[i][j] == 1 && i != j`.
 
 ---
+
+## Day 5 — Grid DFS: Flood Fill & Area
+
+**Pattern:** DFS on a 2D grid treating cells as graph nodes  
+**Key insight:** `getNeighbors` returns the 4 adjacent cells. Mark visited by modifying the grid in-place — no separate visited set needed.
+
+**Template adaptation:**
+
+```go
+var dirs = [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+
+func dfs(grid [][]int, r, c, target, replacement int) {
+    if r < 0 || r >= len(grid) || c < 0 || c >= len(grid[0]) {
+        return // out of bounds
+    }
+    if grid[r][c] != target {
+        return // wrong color or already visited
+    }
+
+    grid[r][c] = replacement // mark visited in-place
+
+    for _, d := range dirs {
+        dfs(grid, r+d[0], c+d[1], target, replacement)
+    }
+}
+```
+
+**In-place marking:** Setting `grid[r][c] = replacement` before recursing ensures you never visit the same cell twice. This replaces the visited set from Day 4.
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Flood Fill | Easy | https://leetcode.com/problems/flood-fill/ |
+| 2 | Max Area of Island | Medium | https://leetcode.com/problems/max-area-of-island/ |
+
+**What to notice — Problem 1:** Edge case — if `image[sr][sc]` already equals `color`, return immediately (no-op). Otherwise DFS will loop: you set the new color, then the base case checks for the new color and stops, but if `target == replacement`, you never stop.
+
+**What to notice — Problem 2:** DFS returns an `int` (the area of the island it just explored). Each cell contributes 1 to the area. Return `1 + dfs(up) + dfs(down) + dfs(left) + dfs(right)`. Track the max across all starting cells.
+
+---
