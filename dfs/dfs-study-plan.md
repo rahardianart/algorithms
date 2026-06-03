@@ -7,7 +7,26 @@
 
 ## The Recursive Template
 
-Every DFS problem (Days 1–6) is a variation of this. Learn it until you can write it in 60 seconds.
+### Generic (graphs)
+
+Works for any graph. The tree version below is a specialization of this.
+
+```go
+func dfs(node Node, visited map[Node]bool) {
+    if visited[node] {
+        return
+    }
+    visited[node] = true
+
+    for _, neighbor := range getNeighbors(node) {
+        dfs(neighbor, visited)
+    }
+}
+```
+
+### Tree specialization (Days 1–3)
+
+Trees have no cycles so no visited map is needed. `getNeighbors` is just `Left` and `Right`.
 
 ```go
 func dfs(node *TreeNode) {
@@ -23,6 +42,12 @@ func dfs(node *TreeNode) {
     // or process here (postorder)
 }
 ```
+
+| | Generic | Tree |
+|-|---------|------|
+| Base case | `visited[node]` | `node == nil` |
+| Visited set | required | not needed |
+| Neighbors | `getNeighbors(node)` | `Left`, `Right` |
 
 **Three rules — never break them:**
 
