@@ -120,10 +120,13 @@ func max(a, b int) int {
 |---|---------|------------|------|
 | 1 | Maximum Depth of Binary Tree | Easy | https://leetcode.com/problems/maximum-depth-of-binary-tree/ |
 | 2 | Path Sum | Easy | https://leetcode.com/problems/path-sum/ |
+| 3 | Lowest Common Ancestor of a Binary Tree | Medium | https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/ |
 
 **What to notice — Problem 1:** This is postorder — you need both children's depths before you can compute the current node's depth. Return `1 + max(left, right)`. Base case: `nil` returns 0.
 
 **What to notice — Problem 2:** This is preorder — subtract `node.Val` from `remaining` as you go down. At a leaf, check if `remaining == 0`. Don't return true at a nil node — only at a leaf (both children nil).
+
+**What to notice — Problem 3 (LCA):** Postorder — recurse left and right first, then decide at the current node. If the current node is `p` or `q`, return it. If left and right both return non-nil, the current node is the LCA. If only one side returns non-nil, bubble that up.
 
 ---
 
