@@ -139,3 +139,79 @@ func threeSum(nums []int) [][]int {
 **What to notice — Problem 2:** Sort first — this enables two pointer on the inner loop. The tricky part is skipping duplicates: skip `nums[i]` at the outer loop, and skip `nums[left]`/`nums[right]` after recording a valid triplet. Without duplicate skipping, you'll get repeated results.
 
 ---
+
+## Day 3 — Opposite Ends: Min/Max Area
+
+**Pattern:** Maximize or minimize a value computed from both ends  
+**Key insight:** Always move the pointer with the smaller value — the area/water is limited by the shorter side, so moving the taller side inward can only decrease or maintain the limiting factor.
+
+**Template adaptation:**
+
+```go
+func maxArea(height []int) int {
+    left, right := 0, len(height)-1
+    maxWater := 0
+
+    for left < right {
+        water := min(height[left], height[right]) * (right - left)
+        if water > maxWater {
+            maxWater = water
+        }
+        if height[left] < height[right] {
+            left++  // move the shorter side — only way to potentially improve
+        } else {
+            right--
+        }
+    }
+    return maxWater
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+**Trapping Rain Water — track running max from both ends:**
+
+```go
+func trap(height []int) int {
+    left, right := 0, len(height)-1
+    maxLeft, maxRight := 0, 0
+    water := 0
+
+    for left < right {
+        if height[left] < height[right] {
+            if height[left] >= maxLeft {
+                maxLeft = height[left]
+            } else {
+                water += maxLeft - height[left]
+            }
+            left++
+        } else {
+            if height[right] >= maxRight {
+                maxRight = height[right]
+            } else {
+                water += maxRight - height[right]
+            }
+            right--
+        }
+    }
+    return water
+}
+```
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Container With Most Water | Medium | https://leetcode.com/problems/container-with-most-water/ |
+| 2 | Trapping Rain Water | Hard | https://leetcode.com/problems/trapping-rain-water/ |
+
+**What to notice — Problem 1:** Area = `min(height[left], height[right]) * (right - left)`. Moving the taller pointer inward always reduces width without guarantee of a taller short side — so always move the shorter pointer.
+
+**What to notice — Problem 2:** Water at position `i` = `min(maxLeft, maxRight) - height[i]`. You don't need to precompute the full left/right max arrays — track them with running variables as you move the pointers. Move whichever side has the smaller max (that side's water calculation is already finalized).
+
+---
