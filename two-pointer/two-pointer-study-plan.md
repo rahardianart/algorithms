@@ -270,3 +270,53 @@ func moveZeroes(nums []int) {
 **What to notice — Problem 2:** Two-pass approach is clearest — first pass writes all non-zeros to the front, second pass fills the rest with zeros. One-pass swap also works: swap `nums[fast]` and `nums[slow]` instead of just writing, which naturally moves zeros to the end.
 
 ---
+
+## Day 5 — Same Direction: Conditional Overwrite
+
+**Pattern:** Same direction with a more complex write condition  
+**Key insight:** The fast/slow template is identical to Day 4 — only the write condition changes. Recognizing this lets you adapt the template to any filtering problem.
+
+**Template adaptation:**
+
+```go
+// Remove element: write when current != target value
+func removeElement(nums []int, val int) int {
+    slow := 0
+
+    for fast := 0; fast < len(nums); fast++ {
+        if nums[fast] != val { // keep everything that isn't val
+            nums[slow] = nums[fast]
+            slow++
+        }
+    }
+    return slow
+}
+
+// Remove duplicates II: allow at most 2 of each — write when current != element 2 positions back
+func removeDuplicatesII(nums []int) int {
+    slow := 0
+
+    for fast := 0; fast < len(nums); fast++ {
+        if slow < 2 || nums[fast] != nums[slow-2] {
+            // slow < 2: first two elements always valid
+            // nums[fast] != nums[slow-2]: current differs from 2 positions back in result
+            nums[slow] = nums[fast]
+            slow++
+        }
+    }
+    return slow
+}
+```
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Remove Element | Easy | https://leetcode.com/problems/remove-element/ |
+| 2 | Remove Duplicates from Sorted Array II | Medium | https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/ |
+
+**What to notice — Problem 1:** Identical to Day 4's template. Only the condition changes from `nums[fast] != nums[slow]` to `nums[fast] != val`. Return `slow` (not `slow + 1`) because `slow` is already the count here — it starts at 0 and increments after each write.
+
+**What to notice — Problem 2:** The condition `nums[fast] != nums[slow-2]` is the key insight. You're comparing against what's 2 positions back in the *result* (not in the original array). The `slow < 2` guard handles the first two elements which are always valid regardless of value.
+
+---
