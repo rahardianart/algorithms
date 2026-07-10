@@ -320,3 +320,62 @@ func removeDuplicatesII(nums []int) int {
 **What to notice — Problem 2:** The condition `nums[fast] != nums[slow-2]` is the key insight. You're comparing against what's 2 positions back in the *result* (not in the original array). The `slow < 2` guard handles the first two elements which are always valid regardless of value.
 
 ---
+
+## Day 6 — Partition
+
+**Pattern:** Divide array into sections using pointers as boundaries  
+**Key insight:** Pointers mark the boundary between sections. Swap elements across the boundary to place them in the right section. With three sections, you need three pointers.
+
+**Template adaptation:**
+
+```go
+// Dutch National Flag — three sections: low(0), mid(1), high(2)
+func sortColors(nums []int) {
+    low, mid, high := 0, 0, len(nums)-1
+
+    for mid <= high {
+        switch nums[mid] {
+        case 0:
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low++
+            mid++
+        case 1:
+            mid++ // already in correct section
+        case 2:
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high-- // don't increment mid — swapped element unexamined
+        }
+    }
+}
+
+// Merge sorted arrays — merge from the END to avoid overwriting nums1
+func merge(nums1 []int, m int, nums2 []int, n int) {
+    i := m - 1     // last valid element in nums1
+    j := n - 1     // last element in nums2
+    k := m + n - 1 // last position in nums1
+
+    for j >= 0 {
+        if i >= 0 && nums1[i] > nums2[j] {
+            nums1[k] = nums1[i]
+            i--
+        } else {
+            nums1[k] = nums2[j]
+            j--
+        }
+        k--
+    }
+}
+```
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Sort Colors | Medium | https://leetcode.com/problems/sort-colors/ |
+| 2 | Merge Sorted Array | Easy | https://leetcode.com/problems/merge-sorted-array/ |
+
+**What to notice — Problem 1:** When you swap `nums[mid]` with `nums[high]`, you don't increment `mid` — the swapped element from `high` is unexamined and might be 0 or 1. When you swap `nums[mid]` with `nums[low]`, you increment both — the swapped element from `low` is always 1 (everything before `low` is already 0, and `mid` only moves forward).
+
+**What to notice — Problem 2:** Merging from the front causes overwriting — you'd clobber elements in `nums1` before reading them. Merging from the end is safe because the extra space in `nums1` is at the end. When `nums2` is exhausted (`j < 0`), the remaining `nums1` elements are already in place — no extra work needed.
+
+---
