@@ -379,3 +379,39 @@ func merge(nums1 []int, m int, nums2 []int, n int) {
 **What to notice — Problem 2:** Merging from the front causes overwriting — you'd clobber elements in `nums1` before reading them. Merging from the end is safe because the extra space in `nums1` is at the end. When `nums2` is exhausted (`j < 0`), the remaining `nums1` elements are already in place — no extra work needed.
 
 ---
+## Day 7 — Mixed Review + Cheatsheet
+
+**Pattern:** Consolidation under pressure  
+**Key insight:** Pattern recognition is the skill. Identify which pointer setup a problem needs within 2 minutes of reading it.
+
+**No new problems today.** Do this instead:
+
+1. Write both templates (opposite ends and fast/slow) from memory.
+2. Pick the 1 day that felt hardest (Days 2–6). Redo one problem without looking at your notes.
+3. Answer out loud: *How do you decide between opposite ends and same direction?*
+
+   > Use **opposite ends** when: the array is sorted and you're searching for a pair/triplet, or you're maximizing/minimizing something computed from both ends. Use **same direction** when: you're filtering or overwriting elements in-place, and the relative order of kept elements matters.
+
+**Self-assessment — can you answer these without hesitation?**
+
+- [ ] Write the opposite ends template from memory
+- [ ] Write the fast/slow template from memory
+- [ ] Why do you sort first in 3Sum?
+- [ ] In Remove Duplicates II, why compare against `nums[slow-2]` instead of `nums[slow-1]`?
+- [ ] In Sort Colors, why don't you increment `mid` after swapping with `high`?
+- [ ] In Merge Sorted Array, why merge from the end?
+
+---
+
+## Pattern Cheatsheet
+
+| Pattern | Pointer setup | Array sorted? | Key move |
+|---------|--------------|---------------|----------|
+| Target sum | opposite ends | yes | `left++` if sum too small, `right--` if too large |
+| Min/max area | opposite ends | no | move the pointer with the smaller value |
+| Remove/overwrite | fast/slow same dir | yes (usually) | `slow` writes, `fast` scans; advance `slow` only on write |
+| Conditional overwrite | fast/slow same dir | no | only the write condition changes |
+| Partition (3 sections) | low/mid/high | no | swap to correct section; don't advance `mid` after swap with `high` |
+| Merge sorted | three pointers from end | yes | merge backwards to avoid overwriting |
+
+---
