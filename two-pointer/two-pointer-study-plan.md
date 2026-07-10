@@ -215,3 +215,58 @@ func trap(height []int) int {
 **What to notice — Problem 2:** Water at position `i` = `min(maxLeft, maxRight) - height[i]`. You don't need to precompute the full left/right max arrays — track them with running variables as you move the pointers. Move whichever side has the smaller max (that side's water calculation is already finalized).
 
 ---
+
+## Day 4 — Same Direction: Remove/Overwrite
+
+**Pattern:** Fast pointer scans, slow pointer marks where to write  
+**Key insight:** `slow` always points to the next valid write position. Only advance `slow` when you write. The elements before `slow` are always the valid result so far.
+
+**Template adaptation:**
+
+```go
+// Remove duplicates: write when current != previous valid
+func removeDuplicates(nums []int) int {
+    if len(nums) == 0 {
+        return 0
+    }
+    slow := 0
+
+    for fast := 1; fast < len(nums); fast++ {
+        if nums[fast] != nums[slow] { // found a new unique element
+            slow++
+            nums[slow] = nums[fast] // write it
+        }
+    }
+    return slow + 1 // length of valid portion
+}
+
+// Move zeroes: write non-zero, then fill rest with zeros
+func moveZeroes(nums []int) {
+    slow := 0
+
+    for fast := 0; fast < len(nums); fast++ {
+        if nums[fast] != 0 {
+            nums[slow] = nums[fast]
+            slow++
+        }
+    }
+    // fill remaining positions with zeros
+    for slow < len(nums) {
+        nums[slow] = 0
+        slow++
+    }
+}
+```
+
+**Problems:**
+
+| # | Problem | Difficulty | Link |
+|---|---------|------------|------|
+| 1 | Remove Duplicates from Sorted Array | Easy | https://leetcode.com/problems/remove-duplicates-from-sorted-array/ |
+| 2 | Move Zeroes | Easy | https://leetcode.com/problems/move-zeroes/ |
+
+**What to notice — Problem 1:** `slow` starts at 0 (first element is always valid). `fast` starts at 1. Write when `nums[fast] != nums[slow]` — this preserves one copy of each duplicate. Return `slow + 1` (not `slow`) because `slow` is an index, not a count.
+
+**What to notice — Problem 2:** Two-pass approach is clearest — first pass writes all non-zeros to the front, second pass fills the rest with zeros. One-pass swap also works: swap `nums[fast]` and `nums[slow]` instead of just writing, which naturally moves zeros to the end.
+
+---
