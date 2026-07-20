@@ -268,6 +268,10 @@ func dfs(grid [][]int, r, c, target, replacement int) {
 **Pattern:** DFS with explicit state undo on the way back up  
 **Key insight:** Make a choice, recurse, then undo the choice. The undo step is what separates backtracking from plain DFS.
 
+**Core idea:** Backtracking explores a decision tree where each node is a partial solution, built incrementally via three steps at every level: **choose** a candidate, **explore** by recursing with it applied, **un-choose** by undoing it before trying the next candidate. This is what makes it DFS rather than brute-force enumeration — you generate and check one full candidate at a time, on a shared, reused state, instead of materializing every possibility upfront.
+
+The other lever is pruning: an `isValid` check before recursing cuts off entire subtrees that can't lead to a valid solution, so you never even explore them. Weak pruning degenerates into brute force with extra overhead — the value of backtracking comes almost entirely from how early and how tight that check is.
+
 **Template adaptation:**
 
 ```go
