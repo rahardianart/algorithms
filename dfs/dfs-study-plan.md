@@ -272,6 +272,20 @@ func dfs(grid [][]int, r, c, target, replacement int) {
 
 The other lever is pruning: an `isValid` check before recursing cuts off entire subtrees that can't lead to a valid solution, so you never even explore them. Weak pruning degenerates into brute force with extra overhead — the value of backtracking comes almost entirely from how early and how tight that check is.
 
+**Generic pseudocode:**
+
+```
+backtrack(state):
+    if state is a complete solution:
+        record/return it
+        return
+    for each candidate in next_candidates(state):
+        if is_valid(candidate, state):       // pruning
+            apply(candidate, state)
+            backtrack(state)
+            undo(candidate, state)           // the "backtrack" step
+```
+
 **Template adaptation:**
 
 ```go
