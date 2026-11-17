@@ -105,14 +105,9 @@ func hasPathSum(node *TreeNode, remaining int) bool {
     }
     return hasPathSum(node.Left, remaining) || hasPathSum(node.Right, remaining)
 }
-
-func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
-}
 ```
+
+`max` and `min` are Go builtins since Go 1.21 — no helper needed.
 
 **Problems:**
 
@@ -319,7 +314,7 @@ The undo step (`current[:len(current)-1]`) restores `current` to its state befor
 
 **What to notice — Problem 1:** Track which numbers are used with a `used []bool` slice. `isValid` checks `!used[i]`. Make choice: `used[i] = true`, append to current. Undo: `used[i] = false`, remove last from current. Record when `len(current) == len(nums)`.
 
-**What to notice — Problem 2:** At each index, choose to include or exclude. No undo needed — pass index+1 to recurse, so each branch naturally excludes the current element. Record `current` at every call (not just leaves) since all subsets are valid.
+**What to notice — Problem 2:** No `used` array. Pass a `start` index: loop `i` from `start` to the end, append `nums[i]`, recurse with `start = i+1`, then undo. Recursing with `i+1` means you only ever pick elements to the right of the last pick, so `[1,2]` and `[2,1]` can't both appear. Record a copy of `current` at every call (not just leaves) — every partial pick is a valid subset. The undo is still there: either truncate explicitly, or pass `current` by value so the caller's length never changes (the same slice-header trick as Day 3).
 
 ---
 

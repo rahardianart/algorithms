@@ -64,7 +64,7 @@ func leftmostTrue(lo, hi int, condition func(int) bool) int {
 4. Repeat steps 2–3 two more times.
 5. Answer this in your head: *Why does the boundary template use `lo < hi` while the classic template uses `lo <= hi`?*
 
-   > The classic template is looking for a possibly-absent exact value — when `lo == hi`, there's still one unchecked element, so the loop must run once more (`<=`). The boundary template is converging `lo` and `hi` onto the same answer index — once they're equal, that index *is* the answer, so nothing left to check (`<`). Using `<=` in the boundary template with `hi = mid` risks an infinite loop when `mid == lo == hi - 0`.
+   > The classic template is looking for a possibly-absent exact value — when `lo == hi`, there's still one unchecked element, so the loop must run once more (`<=`). The boundary template is converging `lo` and `hi` onto the same answer index — once they're equal, that index *is* the answer, so nothing left to check (`<`). Using `<=` in the boundary template with `hi = mid` loops forever: once `lo == hi`, `mid` equals both, `condition(mid)` is true, `hi = mid` changes nothing, and `lo <= hi` is still true.
 
 ---
 
@@ -163,7 +163,7 @@ func minEatingSpeed(piles []int, h int) int {
         return hours
     }
 
-    lo, hi := 1, slices.Max(piles) // speed 1 is always feasible eventually; max(piles) finishes any single pile in 1 hour
+    lo, hi := 1, slices.Max(piles) // lo: slowest possible speed; hi: always feasible (every pile takes 1 hour, and h >= len(piles))
     for lo < hi {
         mid := lo + (hi-lo)/2
         if hoursNeeded(mid) <= h { // feasible — try slower
@@ -192,7 +192,7 @@ func minEatingSpeed(piles []int, h int) int {
 ## Day 5 — 2D and Peak Search
 
 **Pattern:** Binary search over a matrix, or over an array with no single sorted order  
-**Key insight:** A row-and-column sorted matrix can be treated as one flattened sorted array via index math. A "peak" doesn't require full sorting — only a local monotonic slope at `mid`.
+**Key insight:** A matrix whose rows are sorted *and* where each row starts after the previous row ends can be treated as one flattened sorted array via index math. (A matrix that is only row-sorted and column-sorted can't be flattened — that's Search a 2D Matrix II, solved by a staircase walk from the top-right corner.) A "peak" doesn't require full sorting — only a local monotonic slope at `mid`.
 
 **Template adaptation:**
 
@@ -240,13 +240,13 @@ func searchMatrix(matrix [][]int, target int) bool {
 ```go
 func splitArray(nums []int, k int) int {
     canSplit := func(maxSum int) bool {
-        pieces, sum := 1, 0
+        pieces, cur := 1, 0
         for _, n := range nums {
-            if sum+n > maxSum {
+            if cur+n > maxSum { // n doesn't fit in the current piece — start a new one
                 pieces++
-                sum = 0
+                cur = 0
             }
-            sum += n
+            cur += n
         }
         return pieces <= k
     }

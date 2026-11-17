@@ -14,9 +14,9 @@ import "container/heap"
 
 type MinHeap []int
 
-func (h MinHeap) Len() int            { return len(h) }
-func (h MinHeap) Less(i, j int) bool  { return h[i] < h[j] } // flip to > for a max-heap
-func (h MinHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] } // flip to > for a max-heap
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
 
 func (h *MinHeap) Push(x any) {
     *h = append(*h, x.(int))
@@ -31,13 +31,38 @@ func (h *MinHeap) Pop() any {
 }
 ```
 
+**Max-heap:** copy `MinHeap` and flip `Less`. Nothing else changes.
+
+```go
+type MaxHeap []int
+
+func (h MaxHeap) Len() int           { return len(h) }
+func (h MaxHeap) Less(i, j int) bool { return h[i] > h[j] } // the only difference
+func (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MaxHeap) Push(x any) {
+    *h = append(*h, x.(int))
+}
+
+func (h *MaxHeap) Pop() any {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+```
+
+(Shortcut when you're in a hurry: push `-x` into a `MinHeap` and negate again when you pop.)
+
 **Usage:**
 
 ```go
 h := &MinHeap{5, 2, 8}
-heap.Init(h)          // O(n) — arrange an existing slice into heap order
-heap.Push(h, 1)        // O(log n)
-min := heap.Pop(h).(int) // O(log n) — always removes h[0], the top
+heap.Init(h)             // O(n) — arrange an existing slice into heap order
+heap.Push(h, 1)          // O(log n)
+top := heap.Pop(h).(int) // O(log n) — always removes h[0], the top
+peek := (*h)[0]          // O(1) — look at the top without removing it
 ```
 
 **Three rules — never break them:**

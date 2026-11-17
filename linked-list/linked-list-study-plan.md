@@ -21,12 +21,17 @@ dummy := &ListNode{Next: head}
 prev := dummy
 
 for cur := head; cur != nil; cur = cur.Next {
-    // decide whether to keep or skip cur, rewiring prev.Next as needed
-    prev = cur
+    if shouldRemove(cur) {
+        prev.Next = cur.Next // unlink cur — prev stays where it is
+    } else {
+        prev = cur // cur stays in the list, so it becomes the new prev
+    }
 }
 
 return dummy.Next
 ```
+
+`prev` only advances onto nodes that stay in the list. If it advanced onto a removed node, the next unlink would rewire a node that's no longer reachable and the real list would keep the node you meant to delete.
 
 ### Fast/Slow (Floyd's — middle-finding and cycle detection)
 
@@ -60,7 +65,7 @@ func reverseList(head *ListNode) *ListNode {
 
 1. **Use a dummy head whenever the real head might change or be deleted.** It removes the need to special-case "is this the first node" — `prev` always starts pointing at something valid.
 2. **Save `cur.Next` before you overwrite it.** The single most common linked-list bug is rewiring `cur.Next` and losing the reference to the rest of the list. Always capture `next := cur.Next` first.
-3. **Fast/slow moves fast at 2x, slow at 1x.** If there's a cycle, they will meet — that's the whole proof, no need to re-derive it under pressure. If there's no cycle, `fast` (or `fast.Next`) hits `nil` first.
+3. **Fast/slow moves fast at 2x, slow at 1x.** If there's a cycle, they will meet: once both are inside the cycle, `fast` closes the gap by exactly one node per step, so the gap hits 0 — it can't jump over `slow`. If there's no cycle, `fast` (or `fast.Next`) hits `nil` first.
 
 ---
 
@@ -188,7 +193,7 @@ func detectCycle(head *ListNode) *ListNode {
 | 1 | Linked List Cycle II | Medium | https://leetcode.com/problems/linked-list-cycle-ii/ |
 | 2 | Palindrome Linked List | Easy | https://leetcode.com/problems/palindrome-linked-list/ |
 
-**What to notice — Problem 1:** The "reset to head, advance both by 1" step after the meeting point is a known result (Floyd's algorithm) — the distance from `head` to the cycle start equals the distance from the meeting point to the cycle start, going around the loop. Memorize that the second phase always moves both pointers one step at a time, not `slow`/`fast` speeds anymore.
+**What to notice — Problem 1:** The "reset to head, advance both by 1" step after the meeting point is a known result (Floyd's algorithm) — the distance from `head` to the cycle start equals the distance from the meeting point forward to the cycle start, plus some whole number of laps. Why: let `a` = head→cycle start, `b` = cycle start→meeting point, `c` = cycle length. Slow walked `a+b`, fast walked `2(a+b)`; the extra `a+b` is whole laps, `k·c`, so `a = k·c − b` — walking `a` steps from the meeting point finishes the lap and lands on the cycle start. Remember that the second phase always moves both pointers one step at a time, not `slow`/`fast` speeds anymore.
 
 **What to notice — Problem 2:** Three templates in one problem: fast/slow to find the middle, reversal (Day 2) on the second half, then walk both halves comparing values. No need for extra space — this is the in-place O(1) approach interviewers expect once they see you know the pieces.
 
@@ -248,6 +253,10 @@ func mergeTwoLists(l1, l2 *ListNode) *ListNode {
 
 ```go
 func reorderList(head *ListNode) {
+    if head == nil {
+        return
+    }
+
     // 1. find the middle (fast/slow, Day 3)
     slow, fast := head, head
     for fast != nil && fast.Next != nil {
@@ -269,8 +278,10 @@ func reorderList(head *ListNode) {
     // 3. merge the two halves, alternating (dummy-head merge shape, Day 5)
     first, second := head, prev
     for second != nil {
-        first.Next, first = second, first.Next
-        second.Next, second = first, second.Next
+        firstNext, secondNext := first.Next, second.Next // save both before rewiring
+        first.Next = second
+        second.Next = firstNext
+        first, second = firstNext, secondNext
     }
 }
 ```

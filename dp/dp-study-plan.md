@@ -129,14 +129,9 @@ func lengthOfLIS(nums []int) int {
     }
     return best
 }
-
-func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
-}
 ```
+
+`max` and `min` are Go builtins since Go 1.21 — no helper needed.
 
 **Problems:**
 

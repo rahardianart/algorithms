@@ -31,7 +31,7 @@ func bfs(start Node) {
 **Three rules — never break them:**
 
 1. Mark visited **on enqueue**, not on dequeue. If you mark on dequeue, duplicates pile up in the queue.
-2. One full pass through the outer loop = one level. If you need level count, add a counter that increments after each full pass.
+2. In this template one outer-loop iteration processes **one node**, not one level. When you need levels, snapshot `levelSize := len(queue)` at the top of the outer loop and drain exactly that many nodes in an inner loop (Day 2) — then one outer iteration = one level.
 3. `getNeighbors` is the only thing that changes. Everything else stays identical across all BFS problems.
 
 ---
@@ -234,7 +234,8 @@ For grids, the same pattern applies but `getNeighbors` returns adjacent cells.
 ```go
 type Cell struct{ r, c int }
 
-func multiSourceBFS(grid [][]int, sources []Cell) {
+// returns how many levels the wave needed to reach every reachable cell
+func multiSourceBFS(grid [][]int, sources []Cell) int {
     rows, cols := len(grid), len(grid[0])
     visited := make([][]bool, rows)
     for i := range visited {
@@ -264,9 +265,10 @@ func multiSourceBFS(grid [][]int, sources []Cell) {
             }
         }
         if len(queue) > 0 {
-            minutes++
+            minutes++ // only count a level if the wave actually reached new cells
         }
     }
+    return minutes
 }
 ```
 

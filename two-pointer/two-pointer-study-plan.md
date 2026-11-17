@@ -165,14 +165,9 @@ func maxArea(height []int) int {
     }
     return maxWater
 }
-
-func min(a, b int) int {
-    if a < b {
-        return a
-    }
-    return b
-}
 ```
+
+`min` and `max` are Go builtins since Go 1.21 — no helper needed.
 
 **Trapping Rain Water — track running max from both ends:**
 
@@ -212,7 +207,7 @@ func trap(height []int) int {
 
 **What to notice — Problem 1:** Area = `min(height[left], height[right]) * (right - left)`. Moving the taller pointer inward always reduces width without guarantee of a taller short side — so always move the shorter pointer.
 
-**What to notice — Problem 2:** Water at position `i` = `min(maxLeft, maxRight) - height[i]`. You don't need to precompute the full left/right max arrays — track them with running variables as you move the pointers. Move whichever side has the smaller max (that side's water calculation is already finalized).
+**What to notice — Problem 2:** Water at position `i` = `min(maxLeft, maxRight) - height[i]`. You don't need to precompute the full left/right max arrays — track them with running variables as you move the pointers. Move the side with the shorter *bar*: if `height[left] < height[right]`, there is a wall at least as tall as `maxLeft` somewhere on the right, so the water at `left` is exactly `maxLeft - height[left]` — final, no need to know the true right max.
 
 ---
 
