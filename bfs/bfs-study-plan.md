@@ -5,6 +5,22 @@
 
 ---
 
+## What Is BFS?
+
+**Breadth-First Search (BFS)** explores a graph or tree **level by level**: first the starting node, then everything 1 step away, then everything 2 steps away, and so on. It uses a **queue** (first in, first out) so nodes are processed in the order they were discovered, and a **visited set** so no node is processed twice.
+
+Because it expands outward in rings of equal distance, the first time BFS reaches a node is always along a path with the **fewest edges**.
+
+**Typical problems it solves:**
+
+- Shortest path / minimum number of steps when every move costs the same (mazes, grids, word ladders)
+- Level-by-level tree processing (level order traversal, right side view, minimum depth)
+- Spreading from many sources at once (rotting oranges, distance to the nearest gate)
+- Puzzles where each state leads to a few next states (open the lock, sliding puzzles)
+- Connected components and "is B reachable from A?"
+
+---
+
 ## The One Template
 
 Every BFS problem is a variation of this. Learn it until you can write it in 60 seconds.

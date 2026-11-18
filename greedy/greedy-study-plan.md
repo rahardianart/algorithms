@@ -5,6 +5,22 @@
 
 ---
 
+## What Is a Greedy Algorithm?
+
+A **greedy algorithm** builds an answer step by step, always taking the choice that looks **best right now** and never reconsidering it. It's usually one pass, often after sorting, so it's fast — O(n) or O(n log n).
+
+The catch: greedy is only correct when you can prove the local choice is always part of *some* optimal answer (typically with an **exchange argument**). When it isn't — like making change with coins `[1, 3, 4]` — you need DP instead.
+
+**Typical problems it solves:**
+
+- Maximum subarray (Kadane), best time to buy and sell stock
+- Can you reach the end / minimum number of jumps
+- Matching smallest-fit items to needs (assign cookies, boats)
+- Partitioning by last occurrence, distributing candy under neighbor rules
+- Scheduling with deadlines or fuel stops (with a heap to fix earlier choices)
+
+---
+
 ## The Core Template
 
 Greedy isn't one piece of code — it's a decision rule applied in a single pass, usually after a sort:

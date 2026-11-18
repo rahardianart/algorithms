@@ -5,6 +5,23 @@
 
 ---
 
+## What Is Union-Find?
+
+**Union-Find** (also called a Disjoint Set Union, or DSU) keeps track of items split into **groups**. It supports two operations: `find(x)` — which group is `x` in? — and `union(a, b)` — merge the groups of `a` and `b`. Each group is a small tree whose root names the group.
+
+With two simple optimizations (path compression and union by size), both operations take effectively O(1). It's ideal when connections only get **added** and you keep asking "are these connected?".
+
+**Typical problems it solves:**
+
+- Counting connected components (number of provinces)
+- Detecting a cycle / finding the redundant edge in an undirected graph
+- Checking whether a graph is a valid tree
+- Merging things that are "the same" (accounts merge, equality equations)
+- Minimum spanning tree (Kruskal's algorithm)
+- Relations with weights, like ratios or differences (evaluate division)
+
+---
+
 ## The Core Template
 
 ```go

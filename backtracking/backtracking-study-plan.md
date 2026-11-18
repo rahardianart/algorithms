@@ -5,6 +5,22 @@
 
 ---
 
+## What Is Backtracking?
+
+**Backtracking** builds candidate solutions one choice at a time and **undoes** each choice when it's done exploring it: choose → explore (recurse) → un-choose. It's a DFS over a tree of decisions, where each path from the root is a partial answer.
+
+What makes it fast enough is **pruning**: as soon as a partial answer can't possibly succeed, the whole branch below it is skipped. It's still exponential in the worst case — often because the number of answers itself is exponential.
+
+**Typical problems it solves:**
+
+- Generating all subsets, combinations, and permutations (including with duplicates)
+- Combination sum: picking numbers that add up to a target
+- Building strings position by position (phone letter combinations, valid parentheses)
+- Cutting a string into valid pieces (palindrome partitioning, IP addresses)
+- Constraint puzzles on a board (N-Queens, Sudoku, word search)
+
+---
+
 ## The Core Template
 
 ```go

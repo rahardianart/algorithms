@@ -5,6 +5,22 @@
 
 ---
 
+## What Is a Linked List?
+
+A **linked list** is a chain of nodes where each node holds a value and a pointer to the **next** node. Unlike an array, there's no index access — to reach the 5th node you walk from the head. In exchange, inserting or removing a node is O(1) once you're standing next to it: you just rewire pointers.
+
+Linked list problems are about rewiring pointers **in place** without losing track of the rest of the list, usually with three tools: a **dummy head**, **fast/slow pointers**, and **in-place reversal**.
+
+**Typical problems it solves:**
+
+- Reversing all or part of a list
+- Finding the middle, detecting a cycle, finding where the cycle starts
+- Merging sorted lists
+- Removing nodes (n-th from the end, all nodes with a value)
+- Reordering and palindrome checks, adding numbers stored as lists
+
+---
+
 ## The Core Templates
 
 ```go

@@ -5,6 +5,22 @@
 
 ---
 
+## What Is Dynamic Programming?
+
+**Dynamic Programming (DP)** solves a problem by breaking it into smaller **subproblems**, solving each one **once**, and storing the answer so it can be reused. It applies when the same subproblems come up again and again (overlapping subproblems) and the best answer can be built from the best answers to smaller pieces (optimal substructure).
+
+You can write it **top-down** (recursion + a memo cache) or **bottom-up** (fill a table from the smallest cases upward). The key step is always defining what `dp[i]` (or `dp[i][j]`) means.
+
+**Typical problems it solves:**
+
+- Counting the number of ways (climbing stairs, unique paths, decode ways)
+- Minimum / maximum cost with choices (coin change, house robber, minimum path sum)
+- Comparing two strings (longest common subsequence, edit distance)
+- Choosing items under a limit (knapsack, partition equal subset sum)
+- Subsequence problems (longest increasing subsequence)
+
+---
+
 ## The Two Approaches
 
 ### Top-Down (Memoization)

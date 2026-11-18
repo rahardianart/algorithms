@@ -5,6 +5,22 @@
 
 ---
 
+## What Is Binary Search?
+
+**Binary search** finds a target in a **sorted** (or otherwise ordered) search space by checking the middle and throwing away the half that can't contain the answer. Each step halves the remaining candidates, so it takes O(log n) steps — about 20 for a million items.
+
+More generally, binary search works on any yes/no question that is **monotonic**: false, false, …, false, true, true, …, true. It finds where the answer flips — and that search space doesn't have to be an array; it can be a range of possible answers.
+
+**Typical problems it solves:**
+
+- Finding a value, or its first / last position, in a sorted array
+- Insert position, floor / ceiling
+- Rotated sorted arrays and peak finding
+- "Minimum speed / capacity / time such that …" (binary search on the answer)
+- Searching a sorted 2D matrix
+
+---
+
 ## The Two Templates
 
 ### Classic (find an exact value)

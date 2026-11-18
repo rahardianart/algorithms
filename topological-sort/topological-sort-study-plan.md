@@ -5,6 +5,23 @@
 
 ---
 
+## What Is Topological Sort?
+
+A **topological sort** orders the nodes of a **directed** graph so that every edge `u → v` has `u` before `v` — like listing courses so every prerequisite comes before the course that needs it. It exists only when the graph has **no cycle** (a DAG).
+
+Two standard ways to compute it: **Kahn's algorithm** (repeatedly take a node with no remaining prerequisites) and **DFS** (a node goes after everything it leads to). Both run in O(V + E) and both detect cycles.
+
+**Typical problems it solves:**
+
+- Course scheduling: can all courses be finished, and in what order?
+- Build / task ordering with dependencies
+- Detecting cycles in a directed graph, finding "safe" nodes
+- Deriving an order from comparisons (alien dictionary)
+- Longest path / earliest finish time in a DAG (DP in topological order)
+- Finding the center of a tree by peeling leaves (minimum height trees)
+
+---
+
 ## The Two Templates
 
 ### Kahn's Algorithm (BFS on in-degrees)

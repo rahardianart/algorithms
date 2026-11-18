@@ -5,6 +5,22 @@
 
 ---
 
+## What Is a Heap / Priority Queue?
+
+A **heap** is a tree stored in a slice that always keeps the **smallest** (min-heap) or **largest** (max-heap) element at the top. Adding an element or removing the top costs O(log n); looking at the top costs O(1). The rest of the elements are only partially ordered — which is exactly why it's cheaper than keeping everything sorted.
+
+A **priority queue** is the abstract idea ("always give me the most important item next"); a heap is how it's implemented. In Go you get one by implementing `heap.Interface` and using `container/heap`.
+
+**Typical problems it solves:**
+
+- K-th largest / smallest, top k frequent, k closest points
+- Running median of a stream (two heaps)
+- Merging k sorted lists or arrays
+- Scheduling: meeting rooms, task scheduler, "pick the best available option now"
+- Shortest paths with weights (Dijkstra, week 18)
+
+---
+
 ## The Core Template
 
 Go has no built-in heap type. You implement the `heap.Interface` (`Len`, `Less`, `Swap`, `Push`, `Pop`) over a slice, then let the `container/heap` package handle sift-up/sift-down.

@@ -5,6 +5,22 @@
 
 ---
 
+## What Is a Sliding Window?
+
+A **sliding window** is a contiguous range `[left, right]` of an array or string that moves forward through the input. Instead of recomputing everything for each new range, you **add** the element entering on the right and **remove** the element leaving on the left, updating a running state (a sum, a count of characters) in O(1).
+
+Windows are either **fixed-size** (exactly `k` elements) or **variable-size** (grow until invalid, then shrink). Because both ends only move forward, the whole scan is O(n).
+
+**Typical problems it solves:**
+
+- Best sum / average of every window of size k
+- Longest substring without repeating characters, or with at most k distinct characters
+- Shortest subarray with sum ≥ target, minimum window substring
+- Counting subarrays that satisfy a condition
+- Maximum / minimum of every window (with a monotonic deque)
+
+---
+
 ## The Two Templates
 
 ### Fixed Size (window of exactly `k`)

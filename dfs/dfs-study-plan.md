@@ -5,6 +5,22 @@
 
 ---
 
+## What Is DFS?
+
+**Depth-First Search (DFS)** explores by going **as deep as possible** along one path before backing up and trying the next one. It's naturally written with **recursion** (the call stack remembers where to come back to), or with an explicit **stack**.
+
+DFS only keeps the current path in memory, which makes it the natural tool for "explore every path" and "combine answers from children" problems. Unlike BFS, it does **not** find shortest paths.
+
+**Typical problems it solves:**
+
+- Tree problems: depth, path sums, lowest common ancestor, validating structure
+- Root-to-leaf paths and collecting every path
+- Connected components, flood fill, counting islands, area of a region
+- Cycle detection and reachability in graphs
+- Backtracking: generating permutations, subsets, and combinations
+
+---
+
 ## The Recursive Template
 
 ### Generic (graphs)

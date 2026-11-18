@@ -5,6 +5,22 @@
 
 ---
 
+## What Are Prefix Sums and Hashing?
+
+A **prefix sum** array stores, at position `i`, the total of everything before `i`. With it, the sum of **any range** `nums[l..r]` is a single subtraction — `prefix[r+1] - prefix[l]` — instead of a loop.
+
+**Hashing** means using a hash map (Go's `map`) to remember what you've seen so you can answer "have I seen X before?" in O(1). Combined, they find subarrays with a given sum in one pass — even when the numbers are negative, where a sliding window fails.
+
+**Typical problems it solves:**
+
+- Two Sum and other "find the partner" problems
+- Grouping items that belong together (group anagrams)
+- Range sum queries, product of array except self
+- Counting subarrays with sum k, or sum divisible by k
+- Many range updates at once (difference arrays), 2D rectangle sums
+
+---
+
 ## The Two Templates
 
 ### Hash Map: "have I seen what I need?"

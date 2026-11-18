@@ -5,6 +5,23 @@
 
 ---
 
+## What Are Interval Problems?
+
+An **interval** is a pair `[start, end]` — a meeting, a booking, a range of numbers. Interval problems ask how a set of intervals overlap, combine, or fit together.
+
+Almost all of them follow the same recipe: **sort** the intervals (by start or by end, depending on the question), then make **one pass**, comparing each interval only with the last one you kept. The main skill is choosing the sort key and deciding whether touching endpoints count as overlapping.
+
+**Typical problems it solves:**
+
+- Merging overlapping intervals, inserting a new interval
+- Checking for conflicts (can one person attend all meetings?)
+- Intersections of two interval lists
+- Keeping the most non-overlapping intervals / removing the fewest
+- Covering a range with the fewest intervals
+- Counting the maximum overlap at any moment (rooms needed, sweep line)
+
+---
+
 ## The Core Templates
 
 ### Overlap Check (closed intervals `[start, end]`)

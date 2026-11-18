@@ -5,6 +5,23 @@
 
 ---
 
+## What Is Dijkstra's Algorithm?
+
+**Dijkstra's algorithm** finds the shortest path from one node to every other node in a graph where edges have **non-negative weights** (costs, times, distances). It's like BFS, but ordered by total distance instead of number of edges: a **min-heap** always hands you the closest node not yet finalized, and once a node is taken out of the heap, its distance is final.
+
+This week also covers the relatives you pick by looking at the weights: **0-1 BFS** (weights are only 0 or 1), **Bellman-Ford** (negative weights, or at most k edges), and **Floyd–Warshall** (shortest paths between all pairs).
+
+**Typical problems it solves:**
+
+- Network delay time / shortest travel time from a source
+- Cheapest or most reliable path (maximum probability)
+- Grid paths where moves have costs, or "minimize the worst step" (minimum effort)
+- Shortest paths with an extra resource (a coupon, a time limit)
+- Cheapest route with at most k stops (Bellman-Ford)
+- Distances between every pair of cities (Floyd–Warshall)
+
+---
+
 ## The Core Template
 
 ```go

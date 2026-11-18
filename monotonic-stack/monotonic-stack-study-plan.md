@@ -5,6 +5,22 @@
 
 ---
 
+## What Is a Monotonic Stack?
+
+A **monotonic stack** is a stack whose elements are kept in **increasing** or **decreasing** order. Before pushing a new element, you pop every element it "beats" — and each pop is the moment that popped element finds its answer.
+
+It answers "for every element, what's the nearest element to the left/right that is greater (or smaller)?" for the whole array in **one O(n) pass**, where the obvious approach is O(n²).
+
+**Typical problems it solves:**
+
+- Next greater / next smaller element
+- "How many days until a warmer temperature?"
+- Largest rectangle in a histogram, trapping rain water
+- Building the smallest number or string by removing characters (remove k digits)
+- Summing over all subarrays using each element's left/right boundaries (sum of subarray minimums)
+
+---
+
 ## The Core Template
 
 Maintain a stack that stays monotonic (strictly increasing or decreasing, bottom to top) by popping every element the incoming value invalidates before pushing.

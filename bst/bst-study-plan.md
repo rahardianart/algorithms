@@ -5,6 +5,23 @@
 
 ---
 
+## What Is a Binary Search Tree?
+
+A **Binary Search Tree (BST)** is a binary tree with an ordering rule: every value in a node's **left** subtree is smaller than the node, and every value in its **right** subtree is larger. That rule lets you decide which way to go with one comparison, so search and insert take O(h) — O(log n) when the tree is balanced.
+
+**Inorder traversal** (left, node, right) visits a BST's values in **sorted order** — which turns many BST problems into "walk the sorted sequence".
+
+**Typical problems it solves:**
+
+- Search, insert, and delete
+- Validating that a tree really is a BST
+- K-th smallest element, minimum difference between values
+- Range sums and trimming to a range
+- Lowest common ancestor in a BST
+- Building a balanced BST from sorted data, fixing two swapped nodes
+
+---
+
 ## The Core Templates
 
 ```go

@@ -5,6 +5,23 @@
 
 ---
 
+## What Is a Trie?
+
+A **trie** (prefix tree) stores a set of words as a tree where each edge is one letter. Every path from the root spells a **prefix**, and words with the same beginning share the same nodes. A flag on each node marks where a complete word ends.
+
+Looking up a word or prefix takes O(L) for its length L — no matter how many words are stored — which is what makes tries the tool for prefix questions.
+
+**Typical problems it solves:**
+
+- Insert / search words and check prefixes (autocomplete basics)
+- Search with wildcards (`.` matches any letter)
+- Counting words with a prefix, search suggestions
+- Finding many dictionary words inside a text or a grid (word break, word search II)
+- Replacing words with their shortest root
+- Maximum XOR of two numbers (a trie over bits)
+
+---
+
 ## The Core Template
 
 ```go

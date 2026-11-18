@@ -5,6 +5,22 @@
 
 ---
 
+## What Is the Two Pointer Technique?
+
+**Two pointers** means walking through an array (or string) with **two indices at once** instead of a nested loop. Either they start at **both ends** and move toward each other, or they both move **in the same direction**, with one scanning ahead and the other marking where to write.
+
+Each step uses what the pointers see to rule out work for good, so an O(n²) "check every pair" becomes a single O(n) pass — usually with O(1) extra space.
+
+**Typical problems it solves:**
+
+- Finding a pair or triplet with a target sum in a sorted array (Two Sum II, 3Sum)
+- Maximizing something measured from both ends (container with most water, trapping rain water)
+- Removing or filtering elements in place (remove duplicates, move zeroes, remove element)
+- Partitioning an array into groups (sort colors / Dutch national flag)
+- Merging two sorted arrays, checking palindromes
+
+---
+
 ## The Two Templates
 
 ### Opposite Ends
